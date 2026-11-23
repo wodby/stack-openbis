@@ -1,0 +1,51 @@
+name: openbis
+title: openBIS
+icon: openbis
+category: collaboration
+
+services:
+# openBIS's application server with the lab notebook, its data store server
+# and its file server, in one container. Their ports are private.
+- name: openbis
+  title: openBIS
+  service: openbis
+  required: true
+  links:
+  - name: postgres
+    service: postgres
+  - name: sendmail
+    service: opensmtpd
+  volumes:
+  - name: data
+    size: 20
+
+# The public entry point: routes /openbis, /datastore_server and /afs-server to
+# openBIS and sends / to the lab notebook.
+- name: nginx
+  title: Nginx
+  service: openbis-nginx
+  required: true
+  main: true
+  links:
+  - name: backend
+    service: openbis
+
+# openBIS's three databases: the main one, and messages and pathinfo, which
+# Wodby creates next to it for openBIS. openBIS commits changes that span its
+# servers with two-phase commit, which needs prepared transactions.
+- name: postgres
+  title: PostgreSQL
+  service: postgres
+  required: true
+  env:
+  - name: POSTGRES_MAX_PREPARED_TRANSACTIONS
+    value: '64'
+  volumes:
+  - name: data
+    size: 10
+
+# openBIS sends password resets and notifications by email.
+- name: opensmtpd
+  title: OpenSMTPD
+  service: opensmtpd
+  disabled: true
