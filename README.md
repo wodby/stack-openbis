@@ -17,7 +17,7 @@ This repository defines the Wodby stack manifest and default service composition
 ## Service definitions
 
 - [openBIS service](https://github.com/wodby/service-openbis)
-- [openBIS Nginx service](https://github.com/wodby/service-openbis-nginx)
+- [Nginx (openBIS) service](https://github.com/wodby/service-openbis-nginx)
 - [PostgreSQL service](https://github.com/wodby/service-postgres)
 - [OpenSMTPD service](https://github.com/wodby/service-opensmtpd)
 
@@ -26,8 +26,8 @@ This repository defines the Wodby stack manifest and default service composition
 | Component / service | Default configuration |
 | --- | --- |
 | openBIS<br>`openbis` | required; enabled by default; volumes: `data` 20 GB; links: `postgres` → `postgres`, `sendmail` → `opensmtpd` |
-| Nginx<br>`nginx` | required; enabled by default; main; links: `backend` → `openbis` |
-| PostgreSQL<br>`postgres` | required; enabled by default; volumes: `data` 10 GB; prepared transactions on |
+| Nginx<br>`nginx` | required; enabled by default; links: `backend` → `openbis` |
+| PostgreSQL<br>`postgres` | required; enabled by default; volumes: `data` 10 GB |
 | OpenSMTPD<br>`opensmtpd` | optional; disabled by default |
 
 Enabled optional services are selected by default but can be excluded when an
